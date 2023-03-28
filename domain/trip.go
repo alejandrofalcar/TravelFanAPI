@@ -8,18 +8,17 @@ import (
 )
 
 type Trip struct {
-	ID          uint   `gorm:"column:id;primary_key;AUTO_INCREMENT;NOT NULL"`
-	StartDate   time.Time `gorm:"column:start_date;not null"`
-	EndDate     time.Time `gorm:"column:end_date;not null"`
-	Location    string `gorm:"column:location;not null"`
-	Image       string `gorm:"column:image;not null"`
-	Privacy     string `gorm:"column:privacy;not null"`
-	Activities  []Activity
+	ID         uint           `gorm:"column:id;primary_key;AUTO_INCREMENT;NOT NULL"`
+	StartDate  string         `gorm:"column:start_date;not null"`
+	EndDate    string         `gorm:"column:end_date;not null"`
+	Location   string         `gorm:"column:location;not null"`
+	Image      string         `gorm:"column:image;not null"`
+	Privacy    string         `gorm:"column:privacy;not null"`
+	Activities []Activity     `gorm:"foreignKey:TripID"`
 	CreatedAt  time.Time      `gorm:"autoCreateTime"`
 	UpdatedAt  time.Time      `gorm:"autoCreateTime"`
 	DeletedAt  gorm.DeletedAt `gorm:"index"`
 }
-
 
 func (d *Trip) Modify(mod Trip) {
 	if mod.ID != d.ID {
