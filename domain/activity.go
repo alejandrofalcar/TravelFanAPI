@@ -16,7 +16,7 @@ type Activity struct {
 	Location    string `gorm:"column:location"`
 	Latitude    float64 `gorm:"column:latitude"`
 	Longitude   float64 `gorm:"column:longitude"`
-	Name        string `gorm:"column:name"`
+	Street        string `gorm:"column:street"`
 	Description string `gorm:"column:description"`
 	TripID      uint `gorm:"column:trip_id;not null"`
 	Trip        Trip `gorm:"foreignKey:TripID"`
@@ -47,8 +47,8 @@ func (d *Activity) Modify(mod Activity) {
 	if mod.Longitude != d.Longitude {
 		d.Longitude = mod.Longitude
 	}
-	if mod.Name != d.Name {
-		d.Name = mod.Name
+	if mod.Street != d.Street {
+		d.Street = mod.Street
 	}
 	if mod.Description != d.Description {
 		d.Description = mod.Description

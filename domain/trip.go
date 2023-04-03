@@ -14,11 +14,12 @@ type Trip struct {
 	Location   string         `gorm:"column:location;not null"`
 	Image      string         `gorm:"column:image;not null"`
 	Privacy    string         `gorm:"column:privacy;not null"`
-	Activities []Activity     `gorm:"foreignKey:TripID"`
+	Activities []Activity     `gorm:"foreignKey:TripID;onDelete:CASCADE"`
 	CreatedAt  time.Time      `gorm:"autoCreateTime"`
 	UpdatedAt  time.Time      `gorm:"autoCreateTime"`
 	DeletedAt  gorm.DeletedAt `gorm:"index"`
 }
+
 
 func (d *Trip) Modify(mod Trip) {
 	if mod.ID != d.ID {
