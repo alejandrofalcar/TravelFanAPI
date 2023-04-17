@@ -8,24 +8,25 @@ import (
 )
 
 type Activity struct {
-	ID          uint   `gorm:"column:ID;primary_key;AUTO_INCREMENT;NOT NULL"`
-	Date        string `gorm:"column:date"`
-	Image       string `gorm:"column:image"`
-	Type        string `gorm:"column:type"`
-	Time        string `gorm:"column:time"`
-	Location    string `gorm:"column:location"`
-	Latitude    float64 `gorm:"column:latitude"`
-	Longitude   float64 `gorm:"column:longitude"`
-	Street        string `gorm:"column:street"`
-	Description string `gorm:"column:description"`
-	TripID      uint `gorm:"column:trip_id;not null"`
-	Trip        Trip `gorm:"foreignKey:TripID"`
-	CreatedAt  time.Time      `gorm:"autoCreateTime"`
-	UpdatedAt  time.Time      `gorm:"autoCreateTime"`
-	DeletedAt  gorm.DeletedAt `gorm:"index"`
+	ID        uint           `gorm:"column:ID;primary_key;AUTO_INCREMENT;NOT NULL"`
+	Date      string         `gorm:"column:date"`
+	Image     string         `gorm:"column:image"`
+	Type      string         `gorm:"column:type"`
+	Time      string         `gorm:"column:time"`
+	Location  string         `gorm:"column:location"`
+	Latitude  float64        `gorm:"column:latitude"`
+	Longitude float64        `gorm:"column:longitude"`
+	Street    string         `gorm:"column:street"`
+	File      string         `gorm:"column:file"`
+	FileData  []byte         `gorm:"column:file_data"`
+	TripID    uint           `gorm:"column:trip_id;not null"`
+	Trip      Trip           `gorm:"foreignKey:TripID"`
+	CreatedAt time.Time      `gorm:"autoCreateTime"`
+	UpdatedAt time.Time      `gorm:"autoCreateTime"`
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
-func (d *Activity) Modify(mod Activity) {
+func (d *Activity) Modify(mod Activity, file []byte) {
 	if mod.ID != d.ID {
 		d.ID = mod.ID
 	}
@@ -50,8 +51,8 @@ func (d *Activity) Modify(mod Activity) {
 	if mod.Street != d.Street {
 		d.Street = mod.Street
 	}
-	if mod.Description != d.Description {
-		d.Description = mod.Description
+	if mod.File != d.File {
+		d.File = mod.File
 	}
 	if mod.TripID != d.TripID {
 		d.TripID = mod.TripID
@@ -64,7 +65,7 @@ func (d *Activity) Modify(mod Activity) {
 	}
 }
 
-func (d *Activity) Save(db *gorm.DB) error {
+func (d *Activity) Save(db *gorm.DB, file []byte) error {
 	result := db.Save(d)
 	if result.Error != nil {
 		logrus.Errorf("Error in domain.Activity-> Error while saving the driver: %s", result.Error)
