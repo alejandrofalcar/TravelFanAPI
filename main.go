@@ -2,6 +2,7 @@ package main
 
 import (
 	"travelfanapi/app"
+
 	"travelfanapi/routes"
 
 	"github.com/labstack/echo/v4"
@@ -10,6 +11,7 @@ import (
 
 func main() {
 	e := echo.New()
+
 	e = app.InitConnection(*e)
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())

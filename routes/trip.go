@@ -2,7 +2,6 @@ package routes
 
 import (
 	"travelfanapi/api"
-
 	"github.com/labstack/echo/v4"
 )
 

@@ -4,7 +4,6 @@ import (
 	"log"
 	"travelfanapi/config"
 	"travelfanapi/domain"
-
 	"github.com/labstack/echo/v4"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -17,7 +16,7 @@ func InitConnection(e echo.Echo) *echo.Echo {
 	if err != nil {
 		log.Panic(err)
 	}
-	db.AutoMigrate(&domain.Activity{}, domain.Trip{})
+	db.AutoMigrate(&domain.Activity{}, domain.Trip{}, domain.User{})
 
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {

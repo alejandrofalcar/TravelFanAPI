@@ -2,7 +2,6 @@ package dao
 
 import (
 	"travelfanapi/domain"
-
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
