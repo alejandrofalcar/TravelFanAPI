@@ -1,9 +1,9 @@
 package dao
 
 import (
-	"travelfanapi/domain"
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
+	"travelfanapi/domain"
 )
 
 func CreateTrip(db *gorm.DB, trip domain.Trip) (*domain.Trip, error) {
@@ -21,13 +21,24 @@ func GetAllTrips(db *gorm.DB) ([]domain.Trip, error) {
 
 	result := db.Preload("Activities.Trip").Find(&res)
 	if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
-			logrus.Errorf("Error in dao.GetAllTrips -> error: %s", result.Error)
-			return res, result.Error
+		logrus.Errorf("Error in dao.GetAllTrips -> error: %s", result.Error)
+		return res, result.Error
 	}
 
 	return res, nil
 }
 
+func GetTripsByUserId(db *gorm.DB, userId uint) ([]domain.Trip, error) {
+	res := []domain.Trip{}
+
+	result := db.Where("user_id = ?", userId).Preload("Activities.Trip").Find(&res)
+	if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
+		logrus.Errorf("Error in dao.GetTripsByUserId -> error: %s", result.Error)
+		return res, result.Error
+	}
+
+	return res, nil
+}
 
 func GetTripByID(db *gorm.DB, tripID uint) (*domain.Trip, error) {
 	var res domain.Trip
@@ -42,7 +53,6 @@ func GetTripByID(db *gorm.DB, tripID uint) (*domain.Trip, error) {
 
 	return &res, nil
 }
-
 
 func DeleteTripByID(db *gorm.DB, tripID uint) error {
 	result := db.Where("ID = ?", tripID).Delete(&domain.Trip{})
