@@ -31,6 +31,20 @@ func GetTripByID(c echo.Context) error {
 	return c.JSON(http.StatusOK, trip)
 }
 
+func GetTripByUserID(c echo.Context) error {
+	db := c.Get("DB").(*gorm.DB)
+	userID, err := strconv.ParseUint(c.Param("userID"), 10, 0)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid user ID %v", c.Param("userID")))
+	}
+	trips, err := dao.GetTripsByUserId(db, uint(userID))
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, trips)
+}
+
 func GetAllTrips(c echo.Context) error {
 	var trip []domain.Trip
 
