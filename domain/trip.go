@@ -2,13 +2,14 @@ package domain
 
 import (
 	"time"
-
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
 
 type Trip struct {
 	ID         uint           `gorm:"column:id;primary_key;AUTO_INCREMENT;NOT NULL"`
+	UserID     uint           `gorm:"column:user_id;not null"`
+	User       User           `gorm:"foreignKey:UserID"`
 	StartDate  string         `gorm:"column:start_date;not null"`
 	EndDate    string         `gorm:"column:end_date;not null"`
 	Location   string         `gorm:"column:location;not null"`
@@ -19,7 +20,6 @@ type Trip struct {
 	UpdatedAt  time.Time      `gorm:"autoCreateTime"`
 	DeletedAt  gorm.DeletedAt `gorm:"index"`
 }
-
 
 func (d *Trip) Modify(mod Trip) {
 	if mod.ID != d.ID {
@@ -39,6 +39,9 @@ func (d *Trip) Modify(mod Trip) {
 	}
 	if mod.Privacy != d.Privacy {
 		d.Privacy = mod.Privacy
+	}
+	if mod.CreatedAt != d.CreatedAt {
+		d.CreatedAt = mod.CreatedAt 
 	}
 	if mod.UpdatedAt != d.UpdatedAt {
 		d.UpdatedAt = mod.UpdatedAt
