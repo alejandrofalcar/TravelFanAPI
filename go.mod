@@ -14,6 +14,8 @@ require (
 )
 
 require (
+	github.com/agext/levenshtein v1.2.3
+	github.com/agnivade/levenshtein v1.1.1
 	github.com/go-playground/validator/v10 v10.13.0
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
@@ -23,7 +25,9 @@ require (
 	github.com/labstack/gommon v0.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect
+	github.com/sajari/fuzzy v1.0.0
 	github.com/sirupsen/logrus v1.9.0
+	github.com/texttheater/golang-levenshtein/levenshtein v0.0.0-20200805054039-cae8b0eaed6c
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	golang.org/x/crypto v0.7.0 // indirect

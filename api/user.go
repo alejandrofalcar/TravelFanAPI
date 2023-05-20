@@ -1,7 +1,9 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 	"travelfanapi/dao"
 	"travelfanapi/domain"
@@ -97,4 +99,41 @@ func generateToken(userID uint) (string, error) {
 	claims["userID"] = userID
 	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
 	return token.SignedString([]byte("secret"))
+}
+
+func UpdateUserByID(c echo.Context) error {
+	db := c.Get("DB").(*gorm.DB)
+	userID, err := strconv.ParseUint(c.Param("userID"), 10, 0)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid user ID %v", c.Param("userID")))
+	}
+
+	var user domain.User
+	if err := db.First(&user, userID).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("User not found for ID %v", userID))
+		}
+		return err
+	}
+
+	if err := c.Bind(&user); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	// Verificar si se proporcionó una contraseña
+	if user.Password != "" {
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+		if err != nil {
+			return err
+		}
+		user.Password = string(hashedPassword)
+	}
+
+	user.Modify(user)
+
+	if err := db.Save(&user).Error; err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, user)
 }

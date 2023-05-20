@@ -10,6 +10,8 @@ import (
 
 type User struct {
 	ID        uint           `gorm:"column:id;primary_key;AUTO_INCREMENT;NOT NULL"`
+	Avatar    string         `gorm:"column:avatar"`
+	Username  string         `gorm:"column:username;not null;unique"`
 	Name      string         `gorm:"column:name;not null"`
 	Email     string         `gorm:"column:email;not null;unique"`
 	Password  string         `gorm:"column:password;not null"`
@@ -22,14 +24,20 @@ func (d *User) Modify(mod User) {
 	if mod.ID != d.ID {
 		d.ID = mod.ID
 	}
+	if mod.Avatar != d.Avatar {
+		d.Avatar = mod.Avatar
+	}
 	if mod.Name != d.Name {
 		d.Name = mod.Name
 	}
 	if mod.Email != d.Email {
 		d.Email = mod.Email
 	}
-	if mod.CreatedAt != d.CreatedAt {
-		d.CreatedAt = mod.CreatedAt
+	if mod.Username != d.Username {
+		d.Username = mod.Username
+	}
+	if mod.Password != d.Password {
+		d.Password = mod.Password
 	}
 	if mod.UpdatedAt != d.UpdatedAt {
 		d.UpdatedAt = mod.UpdatedAt

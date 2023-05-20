@@ -9,7 +9,28 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
+	"net/url"
+
 )
+
+func GetTripsByLocation(c echo.Context) error {
+	encodedLocation := c.Param("location")
+	
+	// Decodifica la ubicación
+	decodedLocation, err := url.QueryUnescape(encodedLocation)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "Error al decodificar la ubicación")
+	}
+	
+	db := c.Get("DB").(*gorm.DB)
+	trips, err := dao.GetTripsByLocation(db, decodedLocation)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest)
+	}
+	
+	return c.JSON(http.StatusOK, trips)
+}
+
 
 func GetTripByID(c echo.Context) error {
 	trip, isOK := c.Get("trip").(*domain.Trip)
