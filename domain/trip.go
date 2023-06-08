@@ -14,7 +14,6 @@ type Trip struct {
 	EndDate    string         `gorm:"column:end_date;not null"`
 	Location   string         `gorm:"column:location;not null"`
 	Image      string         `gorm:"column:image;not null"`
-	Privacy    string         `gorm:"column:privacy;not null"`
 	Activities []Activity     `gorm:"foreignKey:TripID;onDelete:CASCADE"`
 	CreatedAt  time.Time      `gorm:"autoCreateTime"`
 	UpdatedAt  time.Time      `gorm:"autoCreateTime"`
@@ -36,9 +35,6 @@ func (d *Trip) Modify(mod Trip) {
 	}
 	if mod.Image != d.Image {
 		d.Image = mod.Image
-	}
-	if mod.Privacy != d.Privacy {
-		d.Privacy = mod.Privacy
 	}
 	if mod.CreatedAt != d.CreatedAt {
 		d.CreatedAt = mod.CreatedAt 

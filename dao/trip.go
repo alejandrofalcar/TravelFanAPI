@@ -17,6 +17,7 @@ func GetTripsByLocation(db *gorm.DB, location string) ([]domain.Trip, error) {
 	return trips, nil
 }
 
+
 func CreateTrip(db *gorm.DB, trip domain.Trip) (*domain.Trip, error) {
 	result := db.Create(&trip)
 	if result.Error != nil {
